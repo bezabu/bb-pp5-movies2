@@ -5,6 +5,7 @@ import Container from "react-bootstrap/Container";
 import { Route, Switch } from 'react-router-dom';
 import "./api/axiosDefaults";
 import SignUpForm from "./pages/auth/SignUpForm";
+import SignInForm from "./pages/auth/SignInForm";
 
 
 function App() {
@@ -15,7 +16,7 @@ function App() {
         <Container className={styles.Main}>
           <Switch>
             <Route exact path="/" render={() => <h2>Home</h2>} />
-            <Route exact path="/signin" render={() => <h2>Sign in</h2>} />
+            <Route exact path="/signin" render={() => <SignInForm />} />
             <Route exact path="/signup" render={() => <SignUpForm />} />
             <Route exact path="/popular" render={() => <h2>Popular users</h2>} />
             <Route exact path="/new" render={() => <h2>Newest reviews</h2>} />
@@ -27,7 +28,7 @@ function App() {
         </Container>
         <h2>Hello World!</h2>
         <p>placeholder text</p>
-        <a href="#">placeholder link</a>
+        {/*<a href="#">placeholder link</a>*/}
         <br></br><br></br>
         <Button variant="light">Primary</Button>
       
