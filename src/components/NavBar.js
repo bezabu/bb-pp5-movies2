@@ -24,6 +24,7 @@ const NavBar = () => {
     <Nav className="ml-auto text-left">
       <NavLink exact className={styles.NavLink} activeClassName={styles.Active} to="/"><i class="fa-solid fa-house"></i>Home</NavLink>
       {currentUser ? loggedInIcons : loggedOutIcons}
+      {currentUser}
     </Nav>
   </Navbar.Collapse>
 </Navbar>
