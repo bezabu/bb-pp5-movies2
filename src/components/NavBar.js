@@ -11,8 +11,8 @@ const NavBar = () => {
   const currentUser = useCurrentUser();
   const loggedInIcons = <>{currentUser?.username}</>
   const loggedOutIcons = <>
-  <NavLink className={styles.NavLink} activeClassName={styles.Active} to="/signin"><i class="fa-solid fa-right-to-bracket"></i>Sign in</NavLink>
-  <NavLink className={styles.NavLink} activeClassName={styles.Active} to="/signup"><i class="fa-solid fa-user-plus"></i>Sign up</NavLink>
+  <NavLink className={styles.NavLink} activeClassName={styles.Active} to="/signin"><i className="fa-solid fa-right-to-bracket"></i>Sign in</NavLink>
+  <NavLink className={styles.NavLink} activeClassName={styles.Active} to="/signup"><i className="fa-solid fa-user-plus"></i>Sign up</NavLink>
   </>
   return (
     <Navbar className={styles.NavBar} bg="light" expand="md" fixed="top">
@@ -22,7 +22,7 @@ const NavBar = () => {
   <Navbar.Toggle aria-controls="basic-navbar-nav" />
   <Navbar.Collapse id="basic-navbar-nav">
     <Nav className="ml-auto text-left">
-      <NavLink exact className={styles.NavLink} activeClassName={styles.Active} to="/"><i class="fa-solid fa-house"></i>Home</NavLink>
+      <NavLink exact className={styles.NavLink} activeClassName={styles.Active} to="/"><i className="fa-solid fa-house"></i>Home</NavLink>
       {currentUser ? loggedInIcons : loggedOutIcons}
       {currentUser}
     </Nav>

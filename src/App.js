@@ -1,9 +1,9 @@
 import styles from "./App.module.css";
-import NavBar from './components/NavBar';
+import NavBar from "./components/NavBar";
 import Button from 'react-bootstrap/Button';
 import Container from "react-bootstrap/Container";
 import { Route, Switch } from 'react-router-dom';
-import  NavLink  from 'react-router-dom/NavLink'
+import  { NavLink }  from 'react-router-dom'
 import "./api/axiosDefaults";
 import SignUpForm from "./pages/auth/SignUpForm";
 import SignInForm from "./pages/auth/SignInForm";
