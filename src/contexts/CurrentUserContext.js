@@ -7,14 +7,14 @@ export const SetCurrentUserContext = createContext();
 export const useCurrentUser = () => useContext(CurrentUserContext);
 export const useSetCurrentUser = () => useContext(SetCurrentUserContext);
 
-export const CurrentUserProvider = ({ children }) => {
+export const CurrentUserProvider = ({children}) => {
   const [currentUser, setCurrentUser] = useState(null);
 
   const handleMount = async () => {
     try {
       const { data } = await axios.get("dj-rest-auth/user/");
-      console.log(data);
-      setCurrentUser(data);
+
+      setCurrentUser(data.user);
     } catch (err) {
       console.log(err);
       
