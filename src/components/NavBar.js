@@ -4,7 +4,7 @@ import Nav from 'react-bootstrap/Nav'
 import Container from 'react-bootstrap/Container'
 import film_logo from '../assets/film_logo.png'
 import styles from '../styles/NavBar.module.css'
-import  NavLink  from 'react-router-dom/NavLink'
+import  {NavLink}  from 'react-router-dom'
 
 import { useCurrentUser } from '../contexts/CurrentUserContext'
 
