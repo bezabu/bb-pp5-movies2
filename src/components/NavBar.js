@@ -6,29 +6,109 @@ import film_logo from '../assets/film_logo.png'
 import styles from '../styles/NavBar.module.css'
 import  {NavLink}  from 'react-router-dom'
 
-import { useCurrentUser } from '../contexts/CurrentUserContext'
+import { useCurrentUser, useSetCurrentUser } from '../contexts/CurrentUserContext'
+import Avatar from './Avatar'
+import axios from 'axios'
 
 
 
 
 const NavBar = () => {
   const currentUser = useCurrentUser();
+  const setCurrentUser = useSetCurrentUser();
+
+  const handleSignOut = async () => {
+    try {
+      await axios.post('dj-rest-auth/logout/');
+      setCurrentUser(null);
+    } catch(err) {
+      console.log(err);
+    }
+  }
+
+  const addPostIcon = (
+    <NavLink
+    className={styles.NavLink}
+    activeClassName={styles.Active}
+    to="/reviews/create"
+    >
+      <i class="fa-solid fa-film"></i>Add review
+      </NavLink>
+  
+  )
+
   const loggedOutIcons = <>
   <NavLink className={styles.NavLink} activeClassName={styles.Active} to="/signin"><i className="fa-solid fa-right-to-bracket"></i>Sign in</NavLink>
   <NavLink className={styles.NavLink} activeClassName={styles.Active} to="/signup"><i className="fa-solid fa-user-plus"></i>Sign up</NavLink>
 
   </>
-  const loggedInIcons = <>{currentUser?.username}</>
+  const loggedInIcons = <>
+  <NavLink
+    className={styles.NavLink}
+    activeClassName={styles.Active}
+    to="/feed"
+    >
+      <i class="fa-solid fa-ticket"></i>Feed
+      </NavLink>
+      <NavLink
+    className={styles.NavLink}
+    activeClassName={styles.Active}
+    to="/feed"
+    >
+      <i class="fa-solid fa-video"></i>New
+      </NavLink>
+      <NavLink
+    className={styles.NavLink}
+    activeClassName={styles.Active}
+    to="/new"
+    >
+      <i class="fa-solid fa-star"></i>Popular
+      </NavLink>
+      <NavLink
+    className={styles.NavLink}
+    activeClassName={styles.Active}
+    to="/new"
+    >
+      <i class="fa-solid fa-heart"></i>Liked
+      </NavLink>
+      <NavLink
+    className={styles.NavLink}
+    to="/n"
+    onClick={handleSignOut}
+    >
+      <i class="fa-solid fa-right-from-bracket"></i>Sign out
+      </NavLink>
+      <NavLink
+    className={styles.NavLink}
+    to={`/profiles/${currentUser?.profile_id}`}
+    onClick={() => {}}
+    >
+      <Avatar src={currentUser?.profile_image} text="Profile" height={40} />
+      </NavLink>
+  </>
   
   return (
     <Navbar className={styles.NavBar} bg="light" expand="md" fixed="top">
 <NavLink to="/">
   <Navbar.Brand><Container><img src={film_logo} alt="film logo" height="50"/><h1>Movie Reviews</h1></Container></Navbar.Brand>
   </NavLink>
+  {currentUser && addPostIcon}
   <Navbar.Toggle aria-controls="basic-navbar-nav" />
   <Navbar.Collapse id="basic-navbar-nav">
     <Nav className="ml-auto text-left">
-      <NavLink exact className={styles.NavLink} activeClassName={styles.Active} to="/"><i className="fa-solid fa-house"></i>Home</NavLink>
+      <NavLink
+      exact className={styles.NavLink}
+      activeClassName={styles.Active}
+      to="/"
+      >
+        <i className="fa-solid fa-house"></i>Home</NavLink>
+      <NavLink
+    className={styles.NavLink}
+    activeClassName={styles.Active}
+    to="/movies"
+    >
+      <i class="fa-solid fa-clapperboard"></i>Movies
+      </NavLink>
       {currentUser ? loggedInIcons : loggedOutIcons}
     </Nav>
   </Navbar.Collapse>

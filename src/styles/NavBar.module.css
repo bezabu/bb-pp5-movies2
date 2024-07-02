@@ -5,6 +5,11 @@
 
 .NavLink {
     color: #202020;
+    margin: 0px 8px 0px 8px;
+    padding-left: 9px;
+    padding-right: 2px;
+
+    scale: 140%;
 }
 
 .NavLink:hover {
