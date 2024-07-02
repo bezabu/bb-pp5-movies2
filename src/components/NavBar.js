@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Navbar from 'react-bootstrap/Navbar'
 import Nav from 'react-bootstrap/Nav'
 import Container from 'react-bootstrap/Container'
@@ -9,6 +9,7 @@ import  {NavLink}  from 'react-router-dom'
 import { useCurrentUser, useSetCurrentUser } from '../contexts/CurrentUserContext'
 import Avatar from './Avatar'
 import axios from 'axios'
+import { Dropdown, DropdownButton, NavDropdown } from 'react-bootstrap'
 
 
 
@@ -16,6 +17,20 @@ import axios from 'axios'
 const NavBar = () => {
   const currentUser = useCurrentUser();
   const setCurrentUser = useSetCurrentUser();
+
+  const [expanded, setExpanded] = useState(false)
+  const ref = useRef(null)
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (ref.current && !ref.current.contains(event.target)){
+        setExpanded(false)
+      }
+    }
+    document.addEventListener('mouseup', handleClickOutside)
+    return () => {
+      document.removeEventListener('mouseup', handleClickOutside)
+    }
+  }, [ref])
 
   const handleSignOut = async () => {
     try {
@@ -72,28 +87,35 @@ const NavBar = () => {
       <i class="fa-solid fa-heart"></i>Liked
       </NavLink>
       <NavLink
-    className={styles.NavLink}
-    to="/n"
-    onClick={handleSignOut}
-    >
-      <i class="fa-solid fa-right-from-bracket"></i>Sign out
-      </NavLink>
+            className={styles.NavLink}
+            to="/"
+            onClick={handleSignOut}
+            >
+              <i class="fa-solid fa-right-from-bracket"></i>Sign out
+          </NavLink>
       <NavLink
     className={styles.NavLink}
     to={`/profiles/${currentUser?.profile_id}`}
     onClick={() => {}}
     >
-      <Avatar src={currentUser?.profile_image} text="Profile" height={40} />
+      <Avatar src={currentUser?.profile_image} height={40} />{currentUser?.username}
       </NavLink>
+
+      
+          
+        
+          
+        
+
   </>
   
   return (
-    <Navbar className={styles.NavBar} bg="light" expand="md" fixed="top">
+    <Navbar expanded={expanded} className={styles.NavBar} bg="light" expand="md" fixed="top">
 <NavLink to="/">
   <Navbar.Brand><Container><img src={film_logo} alt="film logo" height="50"/><h1>Movie Reviews</h1></Container></Navbar.Brand>
   </NavLink>
   {currentUser && addPostIcon}
-  <Navbar.Toggle aria-controls="basic-navbar-nav" />
+  <Navbar.Toggle ref={ref} onClick={() => setExpanded(!expanded)} aria-controls="basic-navbar-nav" />
   <Navbar.Collapse id="basic-navbar-nav">
     <Nav className="ml-auto text-left">
       <NavLink
