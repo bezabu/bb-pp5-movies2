@@ -1,80 +1,12 @@
-import { createContext, useContext, useEffect, useMemo, useState, Children } from "react";
-import axios from "axios";
-import { axiosReq, axiosRes } from "../api/axiosDefaults";
-import { useHistory } from "react-router";
+for (var i=0; i < genreData.length; i++ ){
+        console.log(Object.keys(genreData)[i])
+        optionId.push(Object.keys(genreData)[i])
+        for (var j=0; j <3; j++){
+            var foo = Object.values(genreData)[i];
+            console.log(Object.keys(foo)[j])
 
-export const CurrentUserContext = createContext();
-export const SetCurrentUserContext = createContext();
+            console.log(Object.values(foo)[j])
 
-export const useCurrentUser = () => useContext(CurrentUserContext);
-export const useSetCurrentUser = () => useContext(SetCurrentUserContext);
-
-export const CurrentUserProvider = ({ children }) => {
-  const [currentUser, setCurrentUser] = useState(null);
-  const history = useHistory();
-
-  const handleMount = async () => {
-    try {
-      const { data } = await axiosRes.get("dj-rest-auth/user/");
-      //const myData = data.json()
-      //console.log(myData)
-      setCurrentUser(data);
-    } catch (err) {
-      console.log(err);
+        }
+        
     }
-  };
-
-  useEffect(() => {
-    handleMount();
-  }, []);
-
-  useMemo(() => {
-    axiosReq.interceptors.request.use(
-      async (config) => {
-        try {
-          await axios.post("/dj-rest-auth/token/refresh/");
-        } catch (err) {
-          setCurrentUser((prevCurrentUser) => {
-            if (prevCurrentUser) {
-              history.push("/signin");
-            }
-            return null;
-          });
-          return config;
-        }
-        return config;
-      },
-      (err) => {
-        return Promise.reject(err);
-      }
-    );
-
-    axiosRes.interceptors.response.use(
-      (response) => response,
-      async (err) => {
-        if (err.response?.status === 401) {
-          try {
-            await axios.post("/dj-rest-auth/token/refresh/");
-          } catch (err) {
-            setCurrentUser((prevCurrentUser) => {
-              if (prevCurrentUser) {
-                history.push("/signin");
-              }
-              return null;
-            });
-          }
-          return axios(err.config);
-        }
-        return Promise.reject(err);
-      }
-    );
-  }, [history]);
-
-  return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <SetCurrentUserContext.Provider value={setCurrentUser}>
-      {children}
-      </SetCurrentUserContext.Provider>
-    </CurrentUserContext.Provider>
-  );
-};

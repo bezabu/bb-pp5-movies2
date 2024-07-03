@@ -5,13 +5,16 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { CurrentUserProvider } from './contexts/CurrentUserContext';
+import { GenreDataProvider } from './contexts/GenreDataContext';
 
 
 ReactDOM.render(
   <React.StrictMode>
     <Router>
       <CurrentUserProvider>
+        <GenreDataProvider>
         <App />
+        </GenreDataProvider>
       </CurrentUserProvider>
     </Router>
   </React.StrictMode>,
