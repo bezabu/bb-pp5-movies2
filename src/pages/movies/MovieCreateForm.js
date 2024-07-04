@@ -15,20 +15,46 @@ import Asset from "../../components/Asset";
 import axios from "axios";
 import { useGenreData, useSetGenreData } from "../../contexts/GenreDataContext";
 import GenreOptions from "./GenreOptions";
+import { Image } from "react-bootstrap";
 
-function PostCreateForm() {
+function MovieCreateForm() {
 
   const [errors, setErrors] = useState({});
+
+
+
     const genreData = useGenreData();
   const setGenreData = useSetGenreData();
 
   //const [genreData, setGenreData ] = useState(null);
 
-  const [addMovieData, setAddMovieData] = useState({
+  const [movieData, setMovieData] = useState({
     title: "",
     year: "",
+    director: "",
+    actors: "",
+    image: "",
 
   });
+  const { title, year, director, actors, image } = movieData;
+
+  const handleChange = (event) => {
+    setMovieData({
+      ...movieData,
+      [event.target.name]: event.target.value,
+    });
+  };
+
+  const handleChangeImage = (event) => {
+    if (event.target.files.length) {
+      URL.revokeObjectURL(image);
+      setMovieData({
+        ...movieData,
+        image: URL.createObjectURL(event.target.files[0]),
+      });
+    }
+  };
+
 
   /*
   useEffect(() => {
@@ -86,8 +112,8 @@ function PostCreateForm() {
                 placeholder="title"
                 name="title"
                 className={styles.Input}
-                
-                onChange={() => {}}
+                value={title}
+                onChange={handleChange}
               />
             </Form.Group>
             <Form.Group className="">
@@ -97,8 +123,8 @@ function PostCreateForm() {
                 placeholder="year"
                 name="year"
                 className={styles.Input}
-                
-                onChange={() => {}}
+                value={year}
+                onChange={handleChange}
               />
             </Form.Group>
             <Form.Group className="">
@@ -108,56 +134,63 @@ function PostCreateForm() {
                 placeholder="director"
                 name="director"
                 className={styles.Input}
-                
-                onChange={() => {}}
+                value={director}
+                onChange={handleChange}
               />
             </Form.Group>
-            <Form.Group className="">
-            <Form.Label className="d-none">Genre</Form.Label>
-              <Form.Control
-              as="select" multiple className={styles.Input} onChange={() => {}}
-              >
-                {/*<GenreOptions />*/}
-              <option>option 1</option>
-              <option>option 2</option>
-              <option>option 3</option>
-              </Form.Control>
-            </Form.Group>
+            
 
             
             {console.log(JSON.stringify(genreData))}
             {console.log(`keys: ${Object.keys(genreData)}`)}
             {console.log(`values ${Object.values(genreData)}`)}
 
-{/*
-            {[genreData].map((type) => (
-    <div key={`default-${type}`} className="mb-3">
-      <Form.Check 
-        type={type}
-        id={`default-${type}`}
-        label={`first`}
-      />
 
-      <Form.Check
-        type={type}
-        label={`default-${type}`}
-        id={`default-${type}`}
-      />
-    </div>
-  ))}
-  */}
-
+            <Form.Group className="">
+            <Form.Label className="d-none">Actors</Form.Label>
+              <Form.Control
+                type="actors"
+                placeholder="actors"
+                name="actors"
+                className={styles.Input}
+                value={actors}
+                onChange={handleChange}
+              />
+            </Form.Group>
 
 
             <Form.Group className="text-center">
-              
+              {image ? (
+                <>
+                  <figure>
+                    <Image className={appStyles.Image} src={image} rounded />
+                  </figure>
+                  <div>
+                    <Form.Label
+                      className={`${btnStyles.Button} ${btnStyles.Blue} btn`}
+                      htmlFor="image-upload"
+                    >
+                      Change the image
+                    </Form.Label>
+                  </div>
+                </>
+              ) : (
                 <Form.Label
                   className="d-flex justify-content-center"
                   htmlFor="image-upload"
                 >
-                  <Asset src={Upload} message="Click or tap to upload an image"/>
+                  <Asset
+                    src={Upload}
+                    message="Click or tap to upload an image"
+                  />
                 </Form.Label>
+              )}
 
+              <Form.File
+                id="image-upload"
+                accept="image/*"
+                onChange={handleChangeImage}
+              />
             </Form.Group>
             <div className="d-md-none">{textFields}</div>
           </Container>
@@ -172,4 +205,4 @@ function PostCreateForm() {
   );
 }
 
-export default PostCreateForm;
+export default MovieCreateForm;
