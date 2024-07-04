@@ -20,6 +20,7 @@ export const CurrentUserProvider = ({children}) => {
 //second changed axios to axiosRes
   const handleMount = async () => {
     try {
+      console.log('get current user')
       const {data} = await axiosRes.get('/dj-rest-auth/user/')
       setCurrentUser(data)
     } catch(err){
@@ -37,7 +38,8 @@ export const CurrentUserProvider = ({children}) => {
     axiosReq.interceptors.request.use(
         async (config) => {
             try {
-                await axios.post('/dj-rest-auth/token/refresh')
+              console.log('attempt refresh')
+                await axios.post('/dj-rest-auth/token/refresh/')
                 
             } catch{
                 setCurrentUser((prevCurrentUser) => {
@@ -62,6 +64,7 @@ export const CurrentUserProvider = ({children}) => {
         async (err) => {
             if (err.response?.status === 401){
                 try{
+                  console.log('attempt refresh')
                     await axios.post('/dj-rest-auth/token/refresh/')
                 } catch(err){
                     setCurrentUser(prevCurrentUser => {

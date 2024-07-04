@@ -13,7 +13,7 @@ import appStyles from "../../App.module.css";
 import btnStyles from "../../styles/Button.module.css";
 import Asset from "../../components/Asset";
 import axios from "axios";
-import { useGenreData, useSetGenreData } from "../../contexts/GenreDataContext";
+//import { useGenreData, useSetGenreData } from "../../contexts/GenreDataContext";
 import GenreOptions from "./GenreOptions";
 import { Image } from "react-bootstrap";
 import { useHistory } from "react-router-dom/cjs/react-router-dom";
@@ -25,8 +25,8 @@ function MovieCreateForm() {
 
 
 
-    const genreData = useGenreData();
-  const setGenreData = useSetGenreData();
+    //const genreData = useGenreData();
+  //const setGenreData = useSetGenreData();
 
   //const [genreData, setGenreData ] = useState(null);
 
@@ -74,7 +74,8 @@ function MovieCreateForm() {
     formData.append('image', imageInput.current.files[0]);
 
     try {
-      const {data} = await axiosReq.post('/movies/', formData);
+      console.log('attempt movie create')
+      const {data} = await axiosReq.post('/movies/add/', formData);
       console.log(data);;
       history.push(`/movies/${data.id}`)
     } catch(err) {
@@ -172,9 +173,9 @@ function MovieCreateForm() {
             
 
             
-            {console.log(JSON.stringify(genreData))}
-            {console.log(`keys: ${Object.keys(genreData)}`)}
-            {console.log(`values ${Object.values(genreData)}`)}
+            {/*console.log(JSON.stringify(genreData))*/}
+            {/*console.log(`keys: ${Object.keys(genreData)}`)*/}
+            {/*console.log(`values ${Object.values(genreData)}`)*/}
 
 
             <Form.Group className="">
@@ -231,7 +232,7 @@ function MovieCreateForm() {
           <Container className={appStyles.Content}>{textFields}</Container>
         </Col>
       </Row>
-      <GenreOptions />
+      {/*<GenreOptions />*/}
     </Form>
     
   );
