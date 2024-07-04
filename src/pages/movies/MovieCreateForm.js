@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 import Form from "react-bootstrap/Form";
 import Button from "react-bootstrap/Button";
@@ -16,6 +16,8 @@ import axios from "axios";
 import { useGenreData, useSetGenreData } from "../../contexts/GenreDataContext";
 import GenreOptions from "./GenreOptions";
 import { Image } from "react-bootstrap";
+import { useHistory } from "react-router-dom/cjs/react-router-dom";
+import { axiosReq } from "../../api/axiosDefaults";
 
 function MovieCreateForm() {
 
@@ -38,6 +40,10 @@ function MovieCreateForm() {
   });
   const { title, year, director, actors, image } = movieData;
 
+  const imageInput = useRef(null)
+
+  const history = useHistory()
+
   const handleChange = (event) => {
     setMovieData({
       ...movieData,
@@ -54,6 +60,31 @@ function MovieCreateForm() {
       });
     }
   };
+
+
+  const handleSubmit = async (event) => {
+    event.preventDefault()
+    const formData = new FormData();
+
+    formData.append('title', title)
+    formData.append('year', year)
+    //formData.append('genre', 1)
+    formData.append('director', director)
+    formData.append('actors', actors)
+    formData.append('image', imageInput.current.files[0])
+
+    try {
+      const {data} = await axiosReq.post('/movies/add/', formData)
+      console.log(data)
+      history.push(`/movies/${data.id}`)
+    } catch(err) {
+      console.log(err)
+      if (err.response?.status !== 401){
+        setErrors(err.response?.data)
+      }
+    }
+
+  }
 
 
   /*
@@ -98,7 +129,7 @@ function MovieCreateForm() {
 
   return (
     
-    <Form>
+    <Form onSubmit={handleSubmit}>
         
       <Row>
         <Col className="py-2 p-0 p-md-2" md={7} lg={8}>
@@ -190,6 +221,7 @@ function MovieCreateForm() {
                 id="image-upload"
                 accept="image/*"
                 onChange={handleChangeImage}
+                ref={imageInput}
               />
             </Form.Group>
             <div className="d-md-none">{textFields}</div>
