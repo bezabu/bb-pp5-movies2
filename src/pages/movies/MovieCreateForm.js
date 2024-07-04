@@ -40,9 +40,9 @@ function MovieCreateForm() {
   });
   const { title, year, director, actors, image } = movieData;
 
-  const imageInput = useRef(null)
+  const imageInput = useRef(null);
 
-  const history = useHistory()
+  const history = useHistory();
 
   const handleChange = (event) => {
     setMovieData({
@@ -63,24 +63,24 @@ function MovieCreateForm() {
 
 
   const handleSubmit = async (event) => {
-    event.preventDefault()
+    event.preventDefault();
     const formData = new FormData();
 
-    formData.append('title', title)
-    formData.append('year', year)
-    //formData.append('genre', 1)
-    formData.append('director', director)
-    formData.append('actors', actors)
-    formData.append('image', imageInput.current.files[0])
+    formData.append('title', title);
+    formData.append('year', year);
+    //formData.append('genre', 1);
+    formData.append('director', director);
+    formData.append('actors', actors);
+    formData.append('image', imageInput.current.files[0]);
 
     try {
-      const {data} = await axiosReq.post('/movies/add/', formData)
-      console.log(data)
+      const {data} = await axiosReq.post('/movies/', formData);
+      console.log(data);;
       history.push(`/movies/${data.id}`)
     } catch(err) {
       console.log(err)
       if (err.response?.status !== 401){
-        setErrors(err.response?.data)
+        setErrors(err.response?.data);
       }
     }
 
